@@ -31,8 +31,9 @@ class GithubDockerPushPipelineStage implements IPipelineStage {
 
         dockerRepository.login()
         for (String subServiceName : subServiceNames) {
-            dockerRepository.push(dockerImageOwner, subServiceName, dockerImageTag)
-            dockerRepository.rmi(dockerImageOwner, subServiceName, dockerImageTag)
+            String dockerImageName = subServiceName.split("/")[1]
+            dockerRepository.push(dockerImageOwner, dockerImageName, dockerImageTag)
+            dockerRepository.rmi(dockerImageOwner, dockerImageName, dockerImageTag)
             dockerRepository.imagePrune()
         }
         LogUtils.log(script, "List docker images after build image action")

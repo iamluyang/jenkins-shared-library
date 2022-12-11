@@ -33,7 +33,8 @@ class DefaultDockerBuildPipelineStage implements IPipelineStage {
 
         dockerRepository.login()
         for (String subServiceName : subServiceNames) {
-            dockerRepository.build(dockerImageOwner, subServiceName, dockerImageTag, new HashMap<String, String>())
+            String dockerImageName = subServiceName.split("/")[1]
+            dockerRepository.build(dockerImageOwner, dockerImageName, dockerImageTag, new HashMap<String, String>())
         }
         LogUtils.log(script, "List docker images after build image action")
         dockerRepository.images()
