@@ -30,14 +30,14 @@ class DockerService implements IDockerService {
     }
 
     @Override
-    void build(String dockerImageOwner, String dockerImageName, String dockerImageTag, Map<String, String> dockerImageLabels) {
+    void build(String dockerImageOwner, String dockerImageName, String dockerImageTag, String dockerImageContext, Map<String, String> dockerImageLabels) {
         String cmd = "docker build -t ${dockerRegistryUrl}/${dockerImageOwner}/${dockerImageName}:${dockerImageTag}"
         if (dockerImageLabels != null) {
             for (Map.Entry<String, String> dockerImageLabel : dockerImageLabels.entrySet()) {
                 cmd.concat(" --label \"${dockerImageLabel.key = dockerImageLabel.value}\" ")
             }
         }
-        cmd = cmd.concat(" ${dockerImageName}")
+        cmd = cmd.concat(" ${dockerImageContext}")
         script.sh cmd
     }
 

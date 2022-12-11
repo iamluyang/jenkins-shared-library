@@ -18,7 +18,7 @@ interface IDockerService {
      * @param dockerImageTag
      * @param dockerImageLabels
      */
-    void build(String dockerImageOwner, String dockerImageName, String dockerImageTag, Map<String, String> dockerImageLabels)
+    void build(String dockerImageOwner, String dockerImageName, String dockerImageTag, String dockerImageContext, Map<String, String> dockerImageLabels)
 
     /**
      *
