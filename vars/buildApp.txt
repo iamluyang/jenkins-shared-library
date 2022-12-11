@@ -1,0 +1,7 @@
+This global variable does a standard simple build of app.
+<br>
+i.e. Compile > Unit Test > Integration Test > Package the Artifact as a Jar
+
+<p style="font-size:14px;"><strong>repo</strong><br><span style="text-indent:40px;display:inline-block;">the repository name of the project to build</span></p>
+
+

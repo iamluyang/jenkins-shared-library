@@ -1,0 +1,93 @@
+jenkins:
+  groupId: orka
+  global:
+    stages:
+      version:
+        accounts:
+          - git@github.com:iamluyang
+        projects:
+          - hyperctrl-okra
+        branches:
+          - master
+          - dev
+          - test
+          - demo
+          - prep
+        credentials:
+          - 768abe74-f2c4-4e61-b691-afd3ba25f432
+      service:
+        paths:
+          - /
+          - hyperctrl-okra-apps/hyperctrl-okra-apps-server-monitor
+          - hyperctrl-okra-apps/hyperctrl-okra-apps-business-admin
+          - hyperctrl-okra-apps/hyperctrl-okra-apps-business-board
+      docker:
+        hosts:
+          - "Github Repository:ghcr.io"
+          - "Aliyun Repository:registry.cn-hangzhou.aliyuncs.com"
+          - "Harbor Repository:192.168.87.204"
+      monitor:
+        prometheus:
+          enable: true
+      notify:
+        teams:
+          webhook: ""
+        slack:
+          webhook: "https://hooks.slack.com/services/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"
+        dingtalk:
+          webhook: "https://oapi.dingtalk.com/robot/send?access_token=40eb80133b02482c2ace1c18df849fa8c26e09a2e916cea7f29187cbd07910ad"
+        email:
+          smtpHost: smtp.office365.com
+          smtpPort: 587
+          from: msluyang@outlook.com
+          to:
+            - gmluyang@gmail.com
+  apps:
+    - app:
+        enable: true
+        root: hyperctrl-okra-apps
+        name: hyperctrl-okra-apps-business-admin
+        pipeline:
+          stages:
+            test:
+              health:
+                - /v1/checkMe1
+                - /v1/checkMe2
+            docker:
+              from: jdk11
+            deploy:
+              type: aws
+              k8s:
+                replicas:
+                  prod: 1
+                resources:
+                  limits:
+                    memory: 8Gi
+                ingress:
+                  host: admin.hyperctrl.com
+                  serviceName: hyperctrl-okra-apps-business-admin
+                  servicePort: 80
+    - app:
+        enable: true
+        root: hyperctrl-okra-apps
+        name: hyperctrl-okra-apps-business-board
+        pipeline:
+          stages:
+            test:
+              health:
+                - /v1/checkMe1
+                - /v1/checkMe2
+            docker:
+              from: jdk11
+            deploy:
+              type: aws
+              k8s:
+                replicas:
+                  prod: 1
+                resources:
+                  limits:
+                    memory: 8Gi
+                ingress:
+                  host: board.hyperctrl.com
+                  serviceName: hyperctrl-okra-apps-business-board
+                  servicePort: 80

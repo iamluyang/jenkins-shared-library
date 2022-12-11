@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <property name="LOG_HOME" value="logs"/>
+    <property name="SERVICE_NAME" value="hyperctrl-okra-apps-admin"/>
+    <property name="LOG_FORMAT"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] [%X{traceId}] [%logger{56}]: %msg%n"/>
+
+    <!-- Console -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_FORMAT}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ELK -->
+    <appender name="ELK" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_HOME}/${SERVICE_NAME}-%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>14</MaxHistory>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>2048MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <root level="info">
+        <springProfile name="prod">
+            <appender-ref ref="ELK"/>
+        </springProfile>
+
+        <springProfile name="!prod">
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
+    </root>
+
+    <!-- 根据特殊需求指定局部日志级别 -->
+    <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager" level="info"/>
+</configuration>
