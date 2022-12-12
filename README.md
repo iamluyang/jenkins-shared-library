@@ -1,7 +1,7 @@
 # Readme
 * This is an experimental project, my first time writing an automated deployment program for Jenkins Devops. You can design your pipeline in OOP way
 
-![yuque_diagram (1)](https://user-images.githubusercontent.com/10556033/206784739-dc12beb9-95e2-41a1-8de9-a4ad710e68a0.png)
+![yuque_diagram (3)](https://user-images.githubusercontent.com/10556033/206958204-b7fd0dee-1aea-4187-88cf-c05648d283f1.png)
 
 # pipeline.yaml eample
 
